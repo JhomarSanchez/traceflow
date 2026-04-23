@@ -24,10 +24,10 @@ Rules:
 
 ## Current Status
 - Documentation baseline completed and reviewed for internal consistency.
-- Repository now has a hardened Phase 0 scaffold with a runnable FastAPI app, test baseline, Docker defaults, and Alembic model autodiscovery.
+- Repository now has Phase 0 foundation plus Phase 1 auth fully implemented and verified locally and through Docker Compose.
 - MVP scope remains locked around an event-driven workflow execution backend in Python.
 - Codex now has enough documentation to start implementation without inventing major requirements.
-- Added a professional root `README.md` aligned with the documented MVP, architecture, and roadmap.
+- Root documentation now reflects a runnable codebase with auth endpoints, not just scaffolding.
 
 ---
 
@@ -53,6 +53,15 @@ Rules:
 - Added an initial integration test for the health endpoint.
 - Removed the mandatory `.env` dependency from `docker-compose.yml` by inlining safe local defaults for container startup.
 - Added model autodiscovery in `app.infrastructure.db.models` so Alembic autogenerate will pick up ORM modules once they are introduced.
+- Added `User` domain entity, auth use cases, repository interface, SQLAlchemy user model, and SQLAlchemy repository implementation.
+- Added JWT token creation/validation, password hashing, current-user dependency, and structured API error handling for auth flows.
+- Added `POST /api/v1/auth/register`, `POST /api/v1/auth/login`, and `GET /api/v1/auth/me`.
+- Added the first Alembic migration for the `users` table.
+- Added unit and integration tests for registration, login, duplicate email handling, and protected current-user retrieval.
+- Verified auth test suite passes and confirmed the initial migration applies successfully against a temporary SQLite database.
+- Updated `README.md` so repository status matches the implemented milestones.
+- Updated Docker API startup so Alembic migrations run before `uvicorn`, fixing the missing `users` table when booting the local stack through Docker Compose.
+- Verified Docker Compose end-to-end for Phase 1: stack boots, health responds, user registration works, login returns JWT, and `/api/v1/auth/me` succeeds with Bearer auth.
 
 ---
 
@@ -68,6 +77,8 @@ Rules:
 - Phase 0 foundation uses a minimal runnable skeleton first, without introducing premature domain or auth code.
 - `docker-compose.yml` must remain self-contained enough to boot the local stack even before a developer creates a custom `.env`.
 - Alembic environment must explicitly import ORM model modules before relying on `Base.metadata` for autogeneration.
+- Password hashing uses `pbkdf2_sha256` through `passlib` to avoid the Windows `bcrypt` backend compatibility issue encountered in this environment.
+- The Docker API container is responsible for applying pending Alembic migrations on startup in the local MVP environment.
 
 ---
 
@@ -102,8 +113,8 @@ Rules:
 ---
 
 ## Next Recommended Tasks
-1. Implement Phase 1 from `docs/roadmap.md`: auth and user foundation.
-2. Add the first Alembic migration once the `User` ORM model exists.
+1. Implement Phase 2 from `docs/roadmap.md`: workflow management.
+2. Reuse the existing auth dependency to protect workflow endpoints and enforce owner scoping from the first workflow slice.
 3. Verify Docker startup locally once Docker is installed on the machine.
 4. Revisit README badges once CI, tests, and release/versioning signals actually exist.
 5. Update this file after each milestone.
@@ -114,8 +125,7 @@ Rules:
 - Workflow step types are intentionally minimal for MVP and may feel visually underwhelming unless the README explains the engineering value clearly.
 - The event-processing flow is synchronous by design; this is correct for MVP but must not be mistaken for the final scalable architecture.
 - If Codex skips the roadmap and starts from feature ideas instead of milestones, scope drift is likely.
-- The current README accurately reflects a documentation-first stage; it will need another pass once runnable code, setup commands, and real verification signals exist.
-- Docker commands could not be executed in this session because Docker is not installed on the current machine, so container startup remains unverified.
+- A leftover Windows permission warning still appears in `git status` for a stray `pytest-cache-files-*` directory outside the tracked source tree, but it did not affect test execution.
 
 ---
 

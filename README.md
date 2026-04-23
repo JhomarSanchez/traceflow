@@ -1,6 +1,6 @@
 # traceflow
 
-[![Status](https://img.shields.io/badge/status-planning%2Fscaffolding-orange)](./PROGRESS.md)
+[![Status](https://img.shields.io/badge/status-phase%201%20auth%20foundation-brightgreen)](./PROGRESS.md)
 [![Scope](https://img.shields.io/badge/scope-MVP-blue)](./docs/product_scope.md)
 [![Architecture](https://img.shields.io/badge/architecture-modular%20monolith-1f6feb)](./docs/architecture.md)
 [![API](https://img.shields.io/badge/api-FastAPI-009688?logo=fastapi&logoColor=white)](./docs/api_spec.md)
@@ -136,18 +136,13 @@ Example MVP step types:
 
 ## Project Status
 
-The repository is currently in the planning and scaffolding stage.
+The repository now includes:
 
-The documentation baseline is already defined and aligned across:
+- Phase 0 foundation: project scaffold, FastAPI bootstrap, settings, logging, Alembic baseline, Docker files, and test setup.
+- Phase 1 auth foundation: user model, registration, login, current-user retrieval, JWT handling, password hashing, and auth tests.
+- Docker API startup applies Alembic migrations before launching the app so the local stack is usable without a separate manual migration step.
 
-- product scope,
-- architecture,
-- domain model,
-- API specification,
-- engineering rules,
-- implementation roadmap.
-
-This means the project is ready to move from documentation into implementation without inventing major requirements.
+The next implementation milestone is workflow management.
 
 ## Documentation
 

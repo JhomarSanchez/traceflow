@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     log_level: str = Field(default="INFO")
     secret_key: str = Field(default="change-me")
     access_token_expire_minutes: int = Field(default=60)
+    jwt_algorithm: str = Field(default="HS256")
 
     model_config = SettingsConfigDict(
         env_prefix="TRACEFLOW_",
@@ -29,4 +30,3 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
-
