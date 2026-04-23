@@ -24,10 +24,10 @@ Rules:
 
 ## Current Status
 - Documentation baseline completed and reviewed for internal consistency.
-- Repository now has Phase 0 foundation plus Phase 1 auth fully implemented and verified locally and through Docker Compose.
+- Repository now has Phase 0 foundation, Phase 1 auth, and a hardened Phase 2 workflow management slice implemented and verified.
 - MVP scope remains locked around an event-driven workflow execution backend in Python.
 - Codex now has enough documentation to start implementation without inventing major requirements.
-- Root documentation now reflects a runnable codebase with auth endpoints, not just scaffolding.
+- Root documentation now reflects a runnable codebase with auth and workflow endpoints, not just scaffolding.
 
 ---
 
@@ -62,6 +62,15 @@ Rules:
 - Updated `README.md` so repository status matches the implemented milestones.
 - Updated Docker API startup so Alembic migrations run before `uvicorn`, fixing the missing `users` table when booting the local stack through Docker Compose.
 - Verified Docker Compose end-to-end for Phase 1: stack boots, health responds, user registration works, login returns JWT, and `/api/v1/auth/me` succeeds with Bearer auth.
+- Added `Workflow` domain entity, workflow exceptions, workflow repository interface, SQLAlchemy workflow model, and SQLAlchemy workflow repository.
+- Added workflow use cases for create, list, detail, update, activate, and deactivate with owner checks and active-workflow conflict enforcement.
+- Added workflow API schemas and endpoints under `/api/v1/workflows`.
+- Added the second Alembic migration for the `workflows` table.
+- Added unit and integration tests for workflow creation, listing, update, activation state, owner scoping, and active-workflow conflicts.
+- Verified the full test suite passes with workflows included and confirmed the new migration applies successfully against a temporary SQLite database.
+- Updated `docs/api_spec.md` and `README.md` so workflow endpoint behavior and repository status match the implementation.
+- Hardened Phase 2 by adding a DB-level partial unique index for active workflows per `owner_id + event_type`, plus repository-level conflict translation.
+- Added validation for blank `event_type` workflow list filters and extra tests covering update/activate conflicts, blank filters, and DB-level uniqueness enforcement.
 
 ---
 
@@ -79,6 +88,7 @@ Rules:
 - Alembic environment must explicitly import ORM model modules before relying on `Base.metadata` for autogeneration.
 - Password hashing uses `pbkdf2_sha256` through `passlib` to avoid the Windows `bcrypt` backend compatibility issue encountered in this environment.
 - The Docker API container is responsible for applying pending Alembic migrations on startup in the local MVP environment.
+- The MVP enforces one active workflow per user per `event_type` at both the application layer and database layer, returning `409 active_workflow_conflict` when violated.
 
 ---
 
@@ -113,9 +123,9 @@ Rules:
 ---
 
 ## Next Recommended Tasks
-1. Implement Phase 2 from `docs/roadmap.md`: workflow management.
-2. Reuse the existing auth dependency to protect workflow endpoints and enforce owner scoping from the first workflow slice.
-3. Verify Docker startup locally once Docker is installed on the machine.
+1. Implement Phase 3 from `docs/roadmap.md`: workflow step management.
+2. Reuse workflow ownership checks when adding step endpoints so parent workflow authorization stays consistent.
+3. Keep the “one active workflow per event_type” rule in mind when step endpoints begin interacting with activation-ready workflows.
 4. Revisit README badges once CI, tests, and release/versioning signals actually exist.
 5. Update this file after each milestone.
 

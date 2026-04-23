@@ -233,6 +233,7 @@ Required
 
 ### Errors
 - `401 Unauthorized`
+- `409 Conflict` if another active workflow already exists for the same `event_type` for the authenticated user
 - `422 Unprocessable Entity`
 
 ---
@@ -339,6 +340,7 @@ Required
 - `401 Unauthorized`
 - `403 Forbidden`
 - `404 Not Found`
+- `409 Conflict` if the update would create a second active workflow for the same `event_type`
 - `422 Unprocessable Entity`
 
 ---
@@ -357,6 +359,12 @@ Required
   "is_active": true
 }
 ```
+
+### Errors
+- `401 Unauthorized`
+- `403 Forbidden`
+- `404 Not Found`
+- `409 Conflict` if another active workflow already exists for the same `event_type`
 
 ---
 
@@ -607,9 +615,11 @@ The following handled error codes should exist in the MVP:
 
 - `invalid_credentials`
 - `email_already_exists`
+- `active_workflow_conflict`
 - `workflow_not_found`
 - `workflow_inactive`
 - `workflow_has_no_steps`
+- `invalid_workflow_data`
 - `step_order_conflict`
 - `event_type_not_supported`
 - `execution_not_found`

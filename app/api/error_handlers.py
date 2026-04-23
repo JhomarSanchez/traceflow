@@ -7,13 +7,17 @@ from fastapi.responses import JSONResponse
 from app.core.exceptions import TraceflowError
 
 ERROR_STATUS_CODES = {
+    "active_workflow_conflict": 409,
     "authentication_required": 401,
     "email_already_exists": 409,
+    "forbidden_resource_access": 403,
     "inactive_user": 401,
     "invalid_credentials": 401,
     "invalid_token": 401,
+    "invalid_workflow_data": 422,
     "traceflow_error": 500,
     "validation_error": 422,
+    "workflow_not_found": 404,
 }
 
 

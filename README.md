@@ -140,9 +140,10 @@ The repository now includes:
 
 - Phase 0 foundation: project scaffold, FastAPI bootstrap, settings, logging, Alembic baseline, Docker files, and test setup.
 - Phase 1 auth foundation: user model, registration, login, current-user retrieval, JWT handling, password hashing, and auth tests.
+- Phase 2 workflow management: workflow creation, listing, detail retrieval, update, activation/deactivation, owner scoping, and workflow tests.
 - Docker API startup applies Alembic migrations before launching the app so the local stack is usable without a separate manual migration step.
 
-The next implementation milestone is workflow management.
+The next implementation milestone is workflow step management.
 
 ## Documentation
 

@@ -11,7 +11,10 @@ from app.core.exceptions import TokenValidationError
 from app.core.security import decode_access_token
 from app.domain.entities import User
 from app.domain.exceptions import AuthenticationRequiredError
-from app.infrastructure.db.repositories import SqlAlchemyUserRepository
+from app.infrastructure.db.repositories import (
+    SqlAlchemyUserRepository,
+    SqlAlchemyWorkflowRepository,
+)
 from app.infrastructure.db.session import get_db_session
 
 bearer_scheme = HTTPBearer(auto_error=False)
@@ -21,6 +24,12 @@ def get_user_repository(
     session: Annotated[Session, Depends(get_db_session)],
 ) -> SqlAlchemyUserRepository:
     return SqlAlchemyUserRepository(session)
+
+
+def get_workflow_repository(
+    session: Annotated[Session, Depends(get_db_session)],
+) -> SqlAlchemyWorkflowRepository:
+    return SqlAlchemyWorkflowRepository(session)
 
 
 def get_current_user(
