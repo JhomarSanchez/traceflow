@@ -459,6 +459,11 @@ Required
 }
 ```
 
+### Errors
+- `401 Unauthorized`
+- `403 Forbidden`
+- `404 Not Found`
+
 ---
 
 ## `DELETE /api/v1/workflows/{workflow_id}/steps/{step_id}`
@@ -621,6 +626,7 @@ The following handled error codes should exist in the MVP:
 - `workflow_has_no_steps`
 - `invalid_workflow_data`
 - `step_order_conflict`
+- `workflow_step_not_found`
 - `event_type_not_supported`
 - `execution_not_found`
 - `forbidden_resource_access`

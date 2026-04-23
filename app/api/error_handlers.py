@@ -15,9 +15,11 @@ ERROR_STATUS_CODES = {
     "invalid_credentials": 401,
     "invalid_token": 401,
     "invalid_workflow_data": 422,
+    "step_order_conflict": 409,
     "traceflow_error": 500,
     "validation_error": 422,
     "workflow_not_found": 404,
+    "workflow_step_not_found": 404,
 }
 
 

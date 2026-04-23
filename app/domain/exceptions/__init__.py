@@ -8,7 +8,9 @@ from app.domain.exceptions.workflows import (
     ActiveWorkflowConflictError,
     ForbiddenResourceAccessError,
     InvalidWorkflowDataError,
+    StepOrderConflictError,
     WorkflowNotFoundError,
+    WorkflowStepNotFoundError,
 )
 
 __all__ = [
@@ -19,5 +21,7 @@ __all__ = [
     "InactiveUserError",
     "InvalidWorkflowDataError",
     "InvalidCredentialsError",
+    "StepOrderConflictError",
     "WorkflowNotFoundError",
+    "WorkflowStepNotFoundError",
 ]

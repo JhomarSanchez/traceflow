@@ -24,10 +24,10 @@ Rules:
 
 ## Current Status
 - Documentation baseline completed and reviewed for internal consistency.
-- Repository now has Phase 0 foundation, Phase 1 auth, and a hardened Phase 2 workflow management slice implemented and verified.
+- Repository now has Phase 0 foundation, Phase 1 auth, hardened Phase 2 workflow management, and Phase 3 workflow step management implemented and verified.
 - MVP scope remains locked around an event-driven workflow execution backend in Python.
 - Codex now has enough documentation to start implementation without inventing major requirements.
-- Root documentation now reflects a runnable codebase with auth and workflow endpoints, not just scaffolding.
+- Root documentation now reflects a runnable codebase with auth, workflow, and workflow-step endpoints, not just scaffolding.
 
 ---
 
@@ -71,6 +71,13 @@ Rules:
 - Updated `docs/api_spec.md` and `README.md` so workflow endpoint behavior and repository status match the implementation.
 - Hardened Phase 2 by adding a DB-level partial unique index for active workflows per `owner_id + event_type`, plus repository-level conflict translation.
 - Added validation for blank `event_type` workflow list filters and extra tests covering update/activate conflicts, blank filters, and DB-level uniqueness enforcement.
+- Added `WorkflowStep` domain entity, `WorkflowStepType` enum, workflow-step exceptions, repository interface, SQLAlchemy workflow-step model, and SQLAlchemy workflow-step repository.
+- Added workflow-step use cases for add, list, and remove with ownership checks delegated through the parent workflow.
+- Added workflow-step API schemas and endpoints under `/api/v1/workflows/{workflow_id}/steps`.
+- Added the third Alembic migration for the `workflow_steps` table with DB-level unique step-order enforcement per workflow.
+- Added unit and integration tests for step type validation, ordered listing, duplicate step-order conflicts, ownership checks, delete behavior, and DB constraint enforcement.
+- Hardened workflow repository flush handling so DB-level active-workflow conflicts are translated consistently even when they surface before commit.
+- Updated `docs/api_spec.md` and `README.md` so workflow-step behavior and repository status match the implementation.
 
 ---
 
@@ -89,6 +96,8 @@ Rules:
 - Password hashing uses `pbkdf2_sha256` through `passlib` to avoid the Windows `bcrypt` backend compatibility issue encountered in this environment.
 - The Docker API container is responsible for applying pending Alembic migrations on startup in the local MVP environment.
 - The MVP enforces one active workflow per user per `event_type` at both the application layer and database layer, returning `409 active_workflow_conflict` when violated.
+- Supported workflow step types in the MVP are `log_message`, `persist_payload`, `mark_success`, and `transform_payload`.
+- Workflow step order is enforced at both the application layer and database layer, returning `409 step_order_conflict` when violated.
 
 ---
 
@@ -123,9 +132,9 @@ Rules:
 ---
 
 ## Next Recommended Tasks
-1. Implement Phase 3 from `docs/roadmap.md`: workflow step management.
-2. Reuse workflow ownership checks when adding step endpoints so parent workflow authorization stays consistent.
-3. Keep the “one active workflow per event_type” rule in mind when step endpoints begin interacting with activation-ready workflows.
+1. Implement Phase 4 from `docs/roadmap.md`: event ingestion and the synchronous execution engine.
+2. Reuse the workflow-step ordering guarantees when building the execution loop so runtime step traversal stays deterministic.
+3. Keep inactive-workflow and zero-step workflow rejection explicit when wiring `POST /api/v1/events`.
 4. Revisit README badges once CI, tests, and release/versioning signals actually exist.
 5. Update this file after each milestone.
 

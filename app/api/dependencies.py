@@ -14,6 +14,7 @@ from app.domain.exceptions import AuthenticationRequiredError
 from app.infrastructure.db.repositories import (
     SqlAlchemyUserRepository,
     SqlAlchemyWorkflowRepository,
+    SqlAlchemyWorkflowStepRepository,
 )
 from app.infrastructure.db.session import get_db_session
 
@@ -30,6 +31,12 @@ def get_workflow_repository(
     session: Annotated[Session, Depends(get_db_session)],
 ) -> SqlAlchemyWorkflowRepository:
     return SqlAlchemyWorkflowRepository(session)
+
+
+def get_workflow_step_repository(
+    session: Annotated[Session, Depends(get_db_session)],
+) -> SqlAlchemyWorkflowStepRepository:
+    return SqlAlchemyWorkflowStepRepository(session)
 
 
 def get_current_user(

@@ -1,6 +1,6 @@
 # traceflow
 
-[![Status](https://img.shields.io/badge/status-phase%201%20auth%20foundation-brightgreen)](./PROGRESS.md)
+[![Status](https://img.shields.io/badge/status-phase%203%20workflow%20steps-brightgreen)](./PROGRESS.md)
 [![Scope](https://img.shields.io/badge/scope-MVP-blue)](./docs/product_scope.md)
 [![Architecture](https://img.shields.io/badge/architecture-modular%20monolith-1f6feb)](./docs/architecture.md)
 [![API](https://img.shields.io/badge/api-FastAPI-009688?logo=fastapi&logoColor=white)](./docs/api_spec.md)
@@ -141,9 +141,10 @@ The repository now includes:
 - Phase 0 foundation: project scaffold, FastAPI bootstrap, settings, logging, Alembic baseline, Docker files, and test setup.
 - Phase 1 auth foundation: user model, registration, login, current-user retrieval, JWT handling, password hashing, and auth tests.
 - Phase 2 workflow management: workflow creation, listing, detail retrieval, update, activation/deactivation, owner scoping, and workflow tests.
+- Phase 3 workflow steps: ordered step creation, listing, deletion, supported step-type validation, step-order conflict handling, and workflow-step tests.
 - Docker API startup applies Alembic migrations before launching the app so the local stack is usable without a separate manual migration step.
 
-The next implementation milestone is workflow step management.
+The next implementation milestone is event ingestion and synchronous execution.
 
 ## Documentation
 

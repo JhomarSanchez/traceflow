@@ -21,3 +21,13 @@ class ActiveWorkflowConflictError(TraceflowError):
 class InvalidWorkflowDataError(TraceflowError):
     code = "invalid_workflow_data"
     message = "Workflow data is invalid"
+
+
+class StepOrderConflictError(TraceflowError):
+    code = "step_order_conflict"
+    message = "A workflow step already exists for this step_order"
+
+
+class WorkflowStepNotFoundError(TraceflowError):
+    code = "workflow_step_not_found"
+    message = "Workflow step not found"

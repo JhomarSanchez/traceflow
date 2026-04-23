@@ -74,7 +74,7 @@ class SqlAlchemyWorkflowRepository:
             updated_at=workflow.updated_at,
         )
         self.session.add(model)
-        self.session.flush()
+        self._flush_with_conflict_translation()
         return self._to_domain(model)
 
     def update(self, workflow: Workflow) -> Workflow:
@@ -87,7 +87,7 @@ class SqlAlchemyWorkflowRepository:
         model.event_type = workflow.event_type
         model.is_active = workflow.is_active
         model.updated_at = workflow.updated_at
-        self.session.flush()
+        self._flush_with_conflict_translation()
         return self._to_domain(model)
 
     def commit(self) -> None:
@@ -99,6 +99,13 @@ class SqlAlchemyWorkflowRepository:
 
     def rollback(self) -> None:
         self.session.rollback()
+
+    def _flush_with_conflict_translation(self) -> None:
+        try:
+            self.session.flush()
+        except IntegrityError as exc:
+            self.session.rollback()
+            raise ActiveWorkflowConflictError() from exc
 
     @staticmethod
     def _to_domain(model: WorkflowModel) -> Workflow:
