@@ -8,6 +8,13 @@ from app.domain.entities import Workflow
 class WorkflowRepository(Protocol):
     def get_by_id(self, workflow_id: str) -> Workflow | None: ...
 
+    def get_active_by_owner_and_event_type(
+        self,
+        *,
+        owner_id: str,
+        event_type: str,
+    ) -> Workflow | None: ...
+
     def list_by_owner(
         self,
         *,

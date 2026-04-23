@@ -24,10 +24,10 @@ Rules:
 
 ## Current Status
 - Documentation baseline completed and reviewed for internal consistency.
-- Repository now has Phase 0 foundation, Phase 1 auth, hardened Phase 2 workflow management, and Phase 3 workflow step management implemented and verified.
+- Repository now has Phase 0 foundation, Phase 1 auth, hardened Phase 2 workflow management, Phase 3 workflow step management, and Phase 4 event ingestion/execution implemented and verified.
 - MVP scope remains locked around an event-driven workflow execution backend in Python.
 - Codex now has enough documentation to start implementation without inventing major requirements.
-- Root documentation now reflects a runnable codebase with auth, workflow, and workflow-step endpoints, not just scaffolding.
+- Root documentation now reflects a runnable codebase with auth, workflow, workflow-step, and event-ingestion endpoints, not just scaffolding.
 
 ---
 
@@ -78,6 +78,13 @@ Rules:
 - Added unit and integration tests for step type validation, ordered listing, duplicate step-order conflicts, ownership checks, delete behavior, and DB constraint enforcement.
 - Hardened workflow repository flush handling so DB-level active-workflow conflicts are translated consistently even when they surface before commit.
 - Updated `docs/api_spec.md` and `README.md` so workflow-step behavior and repository status match the implementation.
+- Added `EventRecord`, `Execution`, and `ExecutionStep` domain entities plus explicit execution status enums and state-transition guards.
+- Added event/execution exceptions, repository interfaces, SQLAlchemy models, and SQLAlchemy repositories for event records, executions, and execution steps.
+- Added `ReceiveEvent` and `ProcessEvent` use cases plus the synchronous step runtime for `persist_payload`, `log_message`, `mark_success`, and `transform_payload`.
+- Added `POST /api/v1/events` with authenticated owner scoping, event recording, execution lifecycle persistence, and step-level execution traces.
+- Added the fourth Alembic migration for `event_records`, `executions`, and `execution_steps`.
+- Added unit and integration tests for event payload validation, execution state transitions, successful event processing, ownership isolation, workflow-without-steps handling, runtime step failures, and DB execution uniqueness constraints.
+- Updated `docs/api_spec.md` and `README.md` so event-ingestion behavior and repository status match the implementation.
 
 ---
 
@@ -98,6 +105,8 @@ Rules:
 - The MVP enforces one active workflow per user per `event_type` at both the application layer and database layer, returning `409 active_workflow_conflict` when violated.
 - Supported workflow step types in the MVP are `log_message`, `persist_payload`, `mark_success`, and `transform_payload`.
 - Workflow step order is enforced at both the application layer and database layer, returning `409 step_order_conflict` when violated.
+- `transform_payload` uses a minimal MVP contract: `step_config.set_fields` must be an object whose keys are merged into the in-flight payload for subsequent steps.
+- Accepted events that fail during execution still persist `Execution` and `ExecutionStep` failure state before the API returns the corresponding `409` or `500`, when persistence remains possible.
 
 ---
 
@@ -132,9 +141,9 @@ Rules:
 ---
 
 ## Next Recommended Tasks
-1. Implement Phase 4 from `docs/roadmap.md`: event ingestion and the synchronous execution engine.
-2. Reuse the workflow-step ordering guarantees when building the execution loop so runtime step traversal stays deterministic.
-3. Keep inactive-workflow and zero-step workflow rejection explicit when wiring `POST /api/v1/events`.
+1. Implement Phase 5 from `docs/roadmap.md`: execution querying and demo-readiness polish.
+2. Reuse workflow ownership through the underlying workflow when exposing execution list/detail endpoints.
+3. Keep execution and execution-step ordering/query shapes aligned with the traces already persisted by `POST /api/v1/events`.
 4. Revisit README badges once CI, tests, and release/versioning signals actually exist.
 5. Update this file after each milestone.
 

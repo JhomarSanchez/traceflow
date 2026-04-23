@@ -496,9 +496,9 @@ Required
 1. validate event payload
 2. find active workflow owned by authenticated user for `event_type`
 3. create an event record
-4. create an execution with status `running`
+4. create an execution with status `pending`, then move it to `running`
 5. execute workflow steps in order
-6. persist execution result
+6. persist execution result and step-level traces
 7. return execution summary
 
 ### Request body
@@ -531,6 +531,10 @@ Required
 - `409 Conflict` if workflow has no steps
 - `422 Unprocessable Entity`
 - `500 Internal Server Error` for unexpected failures
+
+### Notes
+- If the workflow exists but has no steps, the accepted event still leaves a persisted failed execution trace before returning `409`.
+- If a runtime step failure occurs, the accepted event still leaves persisted failed execution and execution-step records before returning `500`.
 
 ---
 

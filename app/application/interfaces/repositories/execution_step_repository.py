@@ -1,0 +1,19 @@
+from __future__ import annotations
+
+from typing import Protocol
+
+from app.domain.entities import ExecutionStep
+
+
+class ExecutionStepRepository(Protocol):
+    def get_by_id(self, execution_step_id: str) -> ExecutionStep | None: ...
+
+    def list_by_execution_id(self, *, execution_id: str) -> list[ExecutionStep]: ...
+
+    def add(self, execution_step: ExecutionStep) -> ExecutionStep: ...
+
+    def update(self, execution_step: ExecutionStep) -> ExecutionStep: ...
+
+    def commit(self) -> None: ...
+
+    def rollback(self) -> None: ...

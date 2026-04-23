@@ -1,3 +1,6 @@
+from app.domain.entities.event_record import EventRecord, normalize_event_payload
+from app.domain.entities.execution import Execution
+from app.domain.entities.execution_step import ExecutionStep
 from app.domain.entities.user import User, normalize_email
 from app.domain.entities.workflow import (
     Workflow,
@@ -13,9 +16,13 @@ from app.domain.entities.workflow_step import (
 )
 
 __all__ = [
+    "EventRecord",
+    "Execution",
+    "ExecutionStep",
     "User",
     "Workflow",
     "WorkflowStep",
+    "normalize_event_payload",
     "normalize_description",
     "normalize_email",
     "normalize_event_type",

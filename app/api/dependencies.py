@@ -12,6 +12,9 @@ from app.core.security import decode_access_token
 from app.domain.entities import User
 from app.domain.exceptions import AuthenticationRequiredError
 from app.infrastructure.db.repositories import (
+    SqlAlchemyEventRecordRepository,
+    SqlAlchemyExecutionRepository,
+    SqlAlchemyExecutionStepRepository,
     SqlAlchemyUserRepository,
     SqlAlchemyWorkflowRepository,
     SqlAlchemyWorkflowStepRepository,
@@ -37,6 +40,24 @@ def get_workflow_step_repository(
     session: Annotated[Session, Depends(get_db_session)],
 ) -> SqlAlchemyWorkflowStepRepository:
     return SqlAlchemyWorkflowStepRepository(session)
+
+
+def get_event_record_repository(
+    session: Annotated[Session, Depends(get_db_session)],
+) -> SqlAlchemyEventRecordRepository:
+    return SqlAlchemyEventRecordRepository(session)
+
+
+def get_execution_repository(
+    session: Annotated[Session, Depends(get_db_session)],
+) -> SqlAlchemyExecutionRepository:
+    return SqlAlchemyExecutionRepository(session)
+
+
+def get_execution_step_repository(
+    session: Annotated[Session, Depends(get_db_session)],
+) -> SqlAlchemyExecutionStepRepository:
+    return SqlAlchemyExecutionStepRepository(session)
 
 
 def get_current_user(

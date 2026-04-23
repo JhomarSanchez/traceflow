@@ -17,6 +17,20 @@ class SqlAlchemyWorkflowRepository:
         model = self.session.get(WorkflowModel, workflow_id)
         return self._to_domain(model) if model is not None else None
 
+    def get_active_by_owner_and_event_type(
+        self,
+        *,
+        owner_id: str,
+        event_type: str,
+    ) -> Workflow | None:
+        statement = select(WorkflowModel).where(
+            WorkflowModel.owner_id == owner_id,
+            WorkflowModel.event_type == event_type,
+            WorkflowModel.is_active.is_(True),
+        )
+        model = self.session.scalar(statement)
+        return self._to_domain(model) if model is not None else None
+
     def list_by_owner(
         self,
         *,

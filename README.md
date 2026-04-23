@@ -1,6 +1,6 @@
 # traceflow
 
-[![Status](https://img.shields.io/badge/status-phase%203%20workflow%20steps-brightgreen)](./PROGRESS.md)
+[![Status](https://img.shields.io/badge/status-phase%204%20event%20execution-brightgreen)](./PROGRESS.md)
 [![Scope](https://img.shields.io/badge/scope-MVP-blue)](./docs/product_scope.md)
 [![Architecture](https://img.shields.io/badge/architecture-modular%20monolith-1f6feb)](./docs/architecture.md)
 [![API](https://img.shields.io/badge/api-FastAPI-009688?logo=fastapi&logoColor=white)](./docs/api_spec.md)
@@ -142,9 +142,10 @@ The repository now includes:
 - Phase 1 auth foundation: user model, registration, login, current-user retrieval, JWT handling, password hashing, and auth tests.
 - Phase 2 workflow management: workflow creation, listing, detail retrieval, update, activation/deactivation, owner scoping, and workflow tests.
 - Phase 3 workflow steps: ordered step creation, listing, deletion, supported step-type validation, step-order conflict handling, and workflow-step tests.
+- Phase 4 event ingestion and execution: event recording, execution lifecycle persistence, step-level execution traces, synchronous step processing, and event-processing tests for success and failure paths.
 - Docker API startup applies Alembic migrations before launching the app so the local stack is usable without a separate manual migration step.
 
-The next implementation milestone is event ingestion and synchronous execution.
+The next implementation milestone is execution querying and demo-readiness polish.
 
 ## Documentation
 
