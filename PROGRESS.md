@@ -24,7 +24,7 @@ Rules:
 
 ## Current Status
 - Documentation baseline completed and reviewed for internal consistency.
-- Repository is still in planning/scaffolding stage; no application code has been recorded yet.
+- Repository now has a hardened Phase 0 scaffold with a runnable FastAPI app, test baseline, Docker defaults, and Alembic model autodiscovery.
 - MVP scope remains locked around an event-driven workflow execution backend in Python.
 - Codex now has enough documentation to start implementation without inventing major requirements.
 - Added a professional root `README.md` aligned with the documented MVP, architecture, and roadmap.
@@ -45,6 +45,14 @@ Rules:
 - Added `docs/roadmap.md`.
 - Performed a quick cross-document consistency review.
 - Added `README.md` with project positioning, architecture summary, API snapshot, linked documentation, and truthful static badges.
+- Added `pyproject.toml` with Phase 0 runtime and dev dependencies.
+- Added the initial `app/` scaffold aligned with documented layers.
+- Added `FastAPI` bootstrap and `GET /api/v1/health`.
+- Added base settings, logging configuration, SQLAlchemy base/session setup, and Alembic scaffold.
+- Added `Dockerfile`, `docker-compose.yml`, and `.env.example` for local development baseline.
+- Added an initial integration test for the health endpoint.
+- Removed the mandatory `.env` dependency from `docker-compose.yml` by inlining safe local defaults for container startup.
+- Added model autodiscovery in `app.infrastructure.db.models` so Alembic autogenerate will pick up ORM modules once they are introduced.
 
 ---
 
@@ -57,6 +65,9 @@ Rules:
 - Only one active workflow per user per `event_type` should exist in the MVP.
 - Codex must update this file after meaningful progress.
 - README badge policy: use only truthful, low-maintenance badges; do not add CI, coverage, release, or certification badges before those signals exist.
+- Phase 0 foundation uses a minimal runnable skeleton first, without introducing premature domain or auth code.
+- `docker-compose.yml` must remain self-contained enough to boot the local stack even before a developer creates a custom `.env`.
+- Alembic environment must explicitly import ORM model modules before relying on `Base.metadata` for autogeneration.
 
 ---
 
@@ -91,9 +102,9 @@ Rules:
 ---
 
 ## Next Recommended Tasks
-1. Scaffold the repository structure exactly as defined in `docs/architecture.md`.
-2. Bootstrap FastAPI app, settings, logging, DB session management, Alembic, Docker, and pytest.
-3. Implement Phase 1 from `docs/roadmap.md`: auth and user foundation.
+1. Implement Phase 1 from `docs/roadmap.md`: auth and user foundation.
+2. Add the first Alembic migration once the `User` ORM model exists.
+3. Verify Docker startup locally once Docker is installed on the machine.
 4. Revisit README badges once CI, tests, and release/versioning signals actually exist.
 5. Update this file after each milestone.
 
@@ -104,6 +115,7 @@ Rules:
 - The event-processing flow is synchronous by design; this is correct for MVP but must not be mistaken for the final scalable architecture.
 - If Codex skips the roadmap and starts from feature ideas instead of milestones, scope drift is likely.
 - The current README accurately reflects a documentation-first stage; it will need another pass once runnable code, setup commands, and real verification signals exist.
+- Docker commands could not be executed in this session because Docker is not installed on the current machine, so container startup remains unverified.
 
 ---
 

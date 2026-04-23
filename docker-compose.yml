@@ -1,0 +1,38 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      TRACEFLOW_APP_NAME: traceflow
+      TRACEFLOW_ENV: docker
+      TRACEFLOW_DEBUG: "true"
+      TRACEFLOW_API_V1_PREFIX: /api/v1
+      TRACEFLOW_DATABASE_URL: postgresql+psycopg://traceflow:traceflow@db:5432/traceflow
+      TRACEFLOW_LOG_LEVEL: INFO
+      TRACEFLOW_SECRET_KEY: change-me
+      TRACEFLOW_ACCESS_TOKEN_EXPIRE_MINUTES: "60"
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: traceflow
+      POSTGRES_USER: traceflow
+      POSTGRES_PASSWORD: traceflow
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U traceflow -d traceflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
