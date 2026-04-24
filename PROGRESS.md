@@ -25,9 +25,10 @@ Rules:
 ## Current Status
 - Documentation baseline completed and reviewed for internal consistency.
 - Repository now has Phase 0 foundation through Phase 5 execution querying implemented and verified.
+- MVP roadmap is complete and the project is demo-ready.
 - MVP scope remains locked around an event-driven workflow execution backend in Python.
 - Codex now has enough documentation to start implementation without inventing major requirements.
-- Root documentation now reflects a runnable codebase with auth, workflow, workflow-step, event-ingestion, and execution-query endpoints, not just scaffolding.
+- Root documentation now presents the project as a completed MVP rather than an in-progress phase tracker.
 
 ---
 
@@ -91,6 +92,8 @@ Rules:
 - Improved event-processing logs with explicit workflow-resolution, no-step rejection, and per-step completion entries.
 - Added integration tests for execution listing, filters, pagination, owner scoping, detail retrieval, and invalid execution filters.
 - Updated `docs/api_spec.md` and `README.md` so execution-query behavior and repository status match the implementation.
+- Removed phase-style `Project Status` content from `README.md` now that the documented MVP roadmap is complete.
+- Renamed the README stack section from `Planned Stack` to `Stack`.
 
 ---
 
@@ -149,11 +152,11 @@ Rules:
 ---
 
 ## Next Recommended Tasks
-1. Run a final end-to-end demo pass in Docker/PostgreSQL covering register -> workflow -> steps -> event -> execution detail.
-2. Polish README/demo examples now that the full MVP flow is queryable end-to-end.
-3. Only after the MVP feels stable, consider post-MVP roadmap items such as background processing or richer step types.
+1. Keep the MVP stable and avoid adding post-MVP scope unless explicitly desired.
+2. Use the Postman collection or Docker flow for manual demo validation before sharing the repository.
+3. Consider post-MVP roadmap items only after the portfolio presentation feels complete.
 4. Revisit README badges once CI, tests, and release/versioning signals actually exist.
-5. Update this file after each milestone.
+5. Update this file after any future milestone.
 
 ---
 
