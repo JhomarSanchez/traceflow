@@ -51,6 +51,12 @@ class ReceiveEvent:
         )
         if workflow is None:
             raise EventTypeNotSupportedError()
+        logger.info(
+            "workflow_resolved owner_id=%s workflow_id=%s event_type=%s",
+            owner_id,
+            workflow.id,
+            workflow.event_type,
+        )
 
         workflow_steps = self.workflow_step_repository.list_by_workflow_id(
             workflow_id=workflow.id
@@ -74,6 +80,11 @@ class ReceiveEvent:
                 execution.mark_failed("Workflow has no steps")
                 self.execution_repository.update(execution)
                 self.execution_repository.commit()
+                logger.warning(
+                    "execution_rejected_no_steps execution_id=%s workflow_id=%s",
+                    execution.id,
+                    workflow.id,
+                )
                 raise WorkflowHasNoStepsError()
 
             processed_execution = self.process_event(

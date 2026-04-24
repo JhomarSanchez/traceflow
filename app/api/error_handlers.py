@@ -16,6 +16,7 @@ ERROR_STATUS_CODES = {
     "inactive_user": 401,
     "invalid_credentials": 401,
     "invalid_event_payload": 422,
+    "invalid_execution_filter": 422,
     "invalid_token": 401,
     "invalid_execution_state": 500,
     "invalid_workflow_data": 422,

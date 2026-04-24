@@ -11,3 +11,8 @@ class ExecutionNotFoundError(TraceflowError):
 class InvalidExecutionStateError(TraceflowError):
     code = "invalid_execution_state"
     message = "Execution state is invalid"
+
+
+class InvalidExecutionFilterError(TraceflowError):
+    code = "invalid_execution_filter"
+    message = "Execution filter is invalid"

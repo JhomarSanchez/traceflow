@@ -11,6 +11,7 @@ from app.domain.exceptions.events import (
     WorkflowHasNoStepsError,
 )
 from app.domain.exceptions.executions import (
+    InvalidExecutionFilterError,
     ExecutionNotFoundError,
     InvalidExecutionStateError,
 )
@@ -32,6 +33,7 @@ __all__ = [
     "ForbiddenResourceAccessError",
     "InactiveUserError",
     "InvalidEventPayloadError",
+    "InvalidExecutionFilterError",
     "InvalidExecutionStateError",
     "InvalidWorkflowDataError",
     "InvalidCredentialsError",

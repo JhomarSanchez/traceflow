@@ -77,6 +77,12 @@ class ProcessEvent:
 
             execution_step.mark_success(output_data)
             self.execution_step_repository.update(execution_step)
+            logger.info(
+                "workflow_step_completed execution_id=%s workflow_step_id=%s step_type=%s",
+                execution.id,
+                workflow_step.id,
+                workflow_step.step_type.value,
+            )
 
         execution.mark_success()
         self.execution_repository.update(execution)

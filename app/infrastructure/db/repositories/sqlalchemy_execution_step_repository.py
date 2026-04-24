@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app.domain.entities import ExecutionStep, normalize_event_payload
 from app.domain.enums import ExecutionStepStatus
 from app.infrastructure.db.models.execution_step import ExecutionStepModel
+from app.infrastructure.db.models.workflow_step import WorkflowStepModel
 
 
 class SqlAlchemyExecutionStepRepository:
@@ -19,8 +20,12 @@ class SqlAlchemyExecutionStepRepository:
     def list_by_execution_id(self, *, execution_id: str) -> list[ExecutionStep]:
         statement = (
             select(ExecutionStepModel)
+            .join(
+                WorkflowStepModel,
+                ExecutionStepModel.workflow_step_id == WorkflowStepModel.id,
+            )
             .where(ExecutionStepModel.execution_id == execution_id)
-            .order_by(ExecutionStepModel.started_at.asc(), ExecutionStepModel.id.asc())
+            .order_by(WorkflowStepModel.step_order.asc(), ExecutionStepModel.started_at.asc())
         )
         return [self._to_domain(model) for model in self.session.scalars(statement).all()]
 

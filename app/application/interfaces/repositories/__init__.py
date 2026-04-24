@@ -1,7 +1,9 @@
 from app.application.interfaces.repositories.event_record_repository import (
     EventRecordRepository,
 )
-from app.application.interfaces.repositories.execution_repository import ExecutionRepository
+from app.application.interfaces.repositories.execution_repository import (
+    ExecutionRepository,
+)
 from app.application.interfaces.repositories.execution_step_repository import (
     ExecutionStepRepository,
 )

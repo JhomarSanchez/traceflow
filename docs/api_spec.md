@@ -572,6 +572,10 @@ Required
 }
 ```
 
+### Errors
+- `401 Unauthorized`
+- `422 Unprocessable Entity` if execution filters are invalid
+
 ---
 
 ## `GET /api/v1/executions/{execution_id}`
@@ -635,6 +639,7 @@ The following handled error codes should exist in the MVP:
 - `execution_not_found`
 - `forbidden_resource_access`
 - `invalid_event_payload`
+- `invalid_execution_filter`
 - `unexpected_execution_error`
 
 ---

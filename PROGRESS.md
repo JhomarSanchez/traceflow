@@ -24,10 +24,10 @@ Rules:
 
 ## Current Status
 - Documentation baseline completed and reviewed for internal consistency.
-- Repository now has Phase 0 foundation, Phase 1 auth, hardened Phase 2 workflow management, Phase 3 workflow step management, and Phase 4 event ingestion/execution implemented and verified.
+- Repository now has Phase 0 foundation through Phase 5 execution querying implemented and verified.
 - MVP scope remains locked around an event-driven workflow execution backend in Python.
 - Codex now has enough documentation to start implementation without inventing major requirements.
-- Root documentation now reflects a runnable codebase with auth, workflow, workflow-step, and event-ingestion endpoints, not just scaffolding.
+- Root documentation now reflects a runnable codebase with auth, workflow, workflow-step, event-ingestion, and execution-query endpoints, not just scaffolding.
 
 ---
 
@@ -85,6 +85,12 @@ Rules:
 - Added the fourth Alembic migration for `event_records`, `executions`, and `execution_steps`.
 - Added unit and integration tests for event payload validation, execution state transitions, successful event processing, ownership isolation, workflow-without-steps handling, runtime step failures, and DB execution uniqueness constraints.
 - Updated `docs/api_spec.md` and `README.md` so event-ingestion behavior and repository status match the implementation.
+- Added execution-query use cases for paginated execution listing and owner-scoped execution detail retrieval.
+- Added `GET /api/v1/executions` with filters for `status`, `workflow_id`, and `event_type`.
+- Added `GET /api/v1/executions/{execution_id}` with ordered step-level trace output.
+- Improved event-processing logs with explicit workflow-resolution, no-step rejection, and per-step completion entries.
+- Added integration tests for execution listing, filters, pagination, owner scoping, detail retrieval, and invalid execution filters.
+- Updated `docs/api_spec.md` and `README.md` so execution-query behavior and repository status match the implementation.
 
 ---
 
@@ -107,6 +113,8 @@ Rules:
 - Workflow step order is enforced at both the application layer and database layer, returning `409 step_order_conflict` when violated.
 - `transform_payload` uses a minimal MVP contract: `step_config.set_fields` must be an object whose keys are merged into the in-flight payload for subsequent steps.
 - Accepted events that fail during execution still persist `Execution` and `ExecutionStep` failure state before the API returns the corresponding `409` or `500`, when persistence remains possible.
+- Execution list filtering rejects blank `event_type` values with `422 invalid_execution_filter` instead of silently treating them as empty filters.
+- Execution detail authorization remains object-level: `404` for missing executions and `403` for executions owned by another user.
 
 ---
 
@@ -141,9 +149,9 @@ Rules:
 ---
 
 ## Next Recommended Tasks
-1. Implement Phase 5 from `docs/roadmap.md`: execution querying and demo-readiness polish.
-2. Reuse workflow ownership through the underlying workflow when exposing execution list/detail endpoints.
-3. Keep execution and execution-step ordering/query shapes aligned with the traces already persisted by `POST /api/v1/events`.
+1. Run a final end-to-end demo pass in Docker/PostgreSQL covering register -> workflow -> steps -> event -> execution detail.
+2. Polish README/demo examples now that the full MVP flow is queryable end-to-end.
+3. Only after the MVP feels stable, consider post-MVP roadmap items such as background processing or richer step types.
 4. Revisit README badges once CI, tests, and release/versioning signals actually exist.
 5. Update this file after each milestone.
 
