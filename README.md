@@ -3,29 +3,27 @@
 [![Scope](https://img.shields.io/badge/scope-MVP-blue)](./docs/product_scope.md)
 [![Architecture](https://img.shields.io/badge/architecture-modular%20monolith-1f6feb)](./docs/architecture.md)
 [![API](https://img.shields.io/badge/api-FastAPI-009688?logo=fastapi&logoColor=white)](./docs/api_spec.md)
-[![Python](https://img.shields.io/badge/python-3.x-3776AB?logo=python&logoColor=white)](#stack)
+[![Python](https://img.shields.io/badge/python-3.12-3776AB?logo=python&logoColor=white)](#stack)
 [![Database](https://img.shields.io/badge/database-PostgreSQL-4169E1?logo=postgresql&logoColor=white)](./docs/product_scope.md)
 [![ORM](https://img.shields.io/badge/orm-SQLAlchemy-D71F00?logo=sqlalchemy&logoColor=white)](./docs/engineering_rules.md)
 [![Migrations](https://img.shields.io/badge/migrations-Alembic-222222)](./docs/engineering_rules.md)
 [![Auth](https://img.shields.io/badge/auth-JWT-black)](./docs/api_spec.md)
 [![Container](https://img.shields.io/badge/dev%20env-Docker-2496ED?logo=docker&logoColor=white)](./docs/roadmap.md)
 
-`traceflow` is a Python backend MVP for event-driven workflow execution.
+`traceflow` is a Python backend MVP for event-driven workflow execution with persisted traceability.
 
-It is designed as a serious backend engineering portfolio project: an authenticated API receives an event, resolves the matching workflow, executes its steps in order, persists execution and step-level traces, and exposes the result for later inspection.
+It is designed as a backend engineering portfolio project: an authenticated API receives an event, resolves the matching workflow, executes ordered steps, persists execution and step-level traces, and exposes the result for later inspection.
 
-## Why This Project
+## What this project demonstrates
 
-This repository is intentionally focused on demonstrating backend engineering maturity beyond CRUD:
+- FastAPI application structure beyond a single-file CRUD demo.
+- Modular-monolith architecture with explicit layered boundaries.
+- JWT-protected ownership and access-control flows.
+- PostgreSQL persistence through SQLAlchemy 2.x and Alembic migrations.
+- Event ingestion, workflow resolution, ordered step execution, and persisted traces.
+- Docker-based local environment and pytest-based test coverage.
 
-- clear API design,
-- layered modular-monolith architecture,
-- explicit domain rules,
-- ownership and access control,
-- synchronous workflow execution with persisted traceability,
-- disciplined MVP scope.
-
-## Core Flow
+## Core flow
 
 ```text
 Client
@@ -39,7 +37,33 @@ Client
   -> final result returned and remains queryable
 ```
 
-## MVP Capabilities
+## Quickstart
+
+Run the local stack:
+
+```bash
+docker compose up --build
+```
+
+The API will be available at:
+
+```text
+http://localhost:8000/api/v1
+```
+
+Apply migrations manually when not using the Docker command:
+
+```bash
+python -m alembic upgrade head
+```
+
+Run tests:
+
+```bash
+pytest
+```
+
+## MVP capabilities
 
 - User registration, login, and current-user retrieval with JWT authentication.
 - Workflow creation, listing, detail retrieval, update, activation, and deactivation.
@@ -49,7 +73,7 @@ Client
 - Execution history and execution-detail retrieval with step-level traces.
 - PostgreSQL persistence, Alembic migrations, Docker-based local environment, and tests.
 
-## Domain Model
+## Domain model
 
 The MVP revolves around these core entities:
 
@@ -83,7 +107,7 @@ The main design principle is simple: routers stay thin, business behavior lives 
 
 ## Stack
 
-- Python
+- Python 3.12
 - FastAPI
 - PostgreSQL
 - SQLAlchemy 2.x
@@ -92,7 +116,7 @@ The main design principle is simple: routers stay thin, business behavior lives 
 - Docker
 - pytest
 
-## API Snapshot
+## API snapshot
 
 Base path:
 
@@ -114,7 +138,7 @@ Key endpoints:
 
 The main demonstration endpoint is `POST /api/v1/events`, which processes an event synchronously and returns the execution summary.
 
-## Example Event
+## Example event
 
 ```json
 {
@@ -131,7 +155,15 @@ Example MVP step types:
 - `log_message`
 - `persist_payload`
 - `mark_success`
-- `transform_payload` (optional)
+- `transform_payload` optional
+
+## Evaluation path
+
+For a hands-on walkthrough, see:
+
+- [API walkthrough](./docs/api_walkthrough.md)
+
+That document demonstrates the intended evaluation flow: register, log in, create a workflow, add ordered steps, send an event, and inspect execution traces.
 
 ## Documentation
 
@@ -140,10 +172,26 @@ Example MVP step types:
 - [Architecture](./docs/architecture.md)
 - [Domain model](./docs/domain_model.md)
 - [API specification](./docs/api_spec.md)
+- [API walkthrough](./docs/api_walkthrough.md)
 - [Engineering rules](./docs/engineering_rules.md)
 - [Roadmap](./docs/roadmap.md)
+- [Repository metadata recommendations](./docs/repository-metadata.md)
 
-## Badge Policy
+## Recommended GitHub metadata
+
+Use this repository description:
+
+```text
+Event-driven workflow backend with execution tracing, JWT auth, PostgreSQL persistence and modular architecture.
+```
+
+Recommended topics:
+
+```text
+python, fastapi, postgresql, sqlalchemy, alembic, docker, jwt, backend, workflow-engine, traceability, audit-log, modular-monolith, pytest
+```
+
+## Badge policy
 
 This README uses badges selectively.
 
